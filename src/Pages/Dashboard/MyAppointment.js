@@ -3,7 +3,7 @@ import { UserContext } from "../../Contexts/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import PrimarySpinner from "../../Components/Spinners/PrimarySpinner";
 import { toast } from "react-toastify";
-import {Link} from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 const MyAppointment = () => {
   const { user } = useContext(UserContext);
@@ -16,7 +16,7 @@ const MyAppointment = () => {
     queryKey: ["appointments/booked", user?.email],
     queryFn: async () => {
       const res = await fetch(
-        `http://localhost:5000/booked-appointment?email=${user?.email}`,
+        `https://doctors-portal-server-one-eta.vercel.app/booked-appointment?email=${user?.email}`,
         {
           headers: {
             authorization: `bearer ${localStorage.getItem("doctors-token")}`,
@@ -31,12 +31,15 @@ const MyAppointment = () => {
   const handleDeleteBooking = (bookingId) => {
     const agree = window.confirm(`Are you want to delete your booking`);
     if (agree) {
-      fetch(`http://localhost:5000/booked-appointment/${bookingId}`, {
-        method: "DELETE",
-        headers: {
-          authorization: `bearer ${localStorage.getItem("doctors-token")}`,
-        },
-      })
+      fetch(
+        `https://doctors-portal-server-one-eta.vercel.app/booked-appointment/${bookingId}`,
+        {
+          method: "DELETE",
+          headers: {
+            authorization: `bearer ${localStorage.getItem("doctors-token")}`,
+          },
+        }
+      )
         .then((res) => res.json())
         .then((data) => {
           if (data.acknowledged) {

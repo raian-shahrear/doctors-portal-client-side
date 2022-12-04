@@ -13,11 +13,14 @@ const ManageDoctor = () => {
   } = useQuery({
     queryKey: ["doctors"],
     queryFn: async () => {
-      const res = await fetch("http://localhost:5000/doctors", {
-        headers: {
-          authorization: `bearer ${localStorage.getItem("doctors-token")}`,
-        },
-      });
+      const res = await fetch(
+        "https://doctors-portal-server-one-eta.vercel.app/doctors",
+        {
+          headers: {
+            authorization: `bearer ${localStorage.getItem("doctors-token")}`,
+          },
+        }
+      );
       const data = await res.json();
       return data;
     },
@@ -26,14 +29,17 @@ const ManageDoctor = () => {
   const closeModal = () => {
     setDeletingDoctor(null);
   };
-  
+
   const handleDeleteDoctor = (doctor) => {
-    fetch(`http://localhost:5000/doctors/${doctor?._id}`, {
-      method: "DELETE",
-      headers: {
-        authorization: `bearer ${localStorage.getItem("doctors-token")}`,
-      },
-    })
+    fetch(
+      `https://doctors-portal-server-one-eta.vercel.app/doctors/${doctor?._id}`,
+      {
+        method: "DELETE",
+        headers: {
+          authorization: `bearer ${localStorage.getItem("doctors-token")}`,
+        },
+      }
+    )
       .then((res) => res.json())
       .then((doctorData) => {
         if (doctorData.acknowledged) {

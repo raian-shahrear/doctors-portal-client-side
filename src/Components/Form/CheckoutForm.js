@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-
 
 const CheckoutForm = ({ appointment }) => {
   const { patient, email, servicePrice, serviceName, _id } = appointment;
@@ -13,14 +12,17 @@ const CheckoutForm = ({ appointment }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://localhost:5000/create-payment-intent", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: `bearer ${localStorage.getItem("doctors-token")}`,
-      },
-      body: JSON.stringify({ servicePrice }),
-    })
+    fetch(
+      "https://doctors-portal-server-one-eta.vercel.app/create-payment-intent",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `bearer ${localStorage.getItem("doctors-token")}`,
+        },
+        body: JSON.stringify({ servicePrice }),
+      }
+    )
       .then((res) => res.json())
       .then((data) => {
         if (data.clientSecret) {
@@ -76,9 +78,9 @@ const CheckoutForm = ({ appointment }) => {
         orderedId: _id,
         servicePrice,
         email,
-        transactionId: paymentIntent.id
+        transactionId: paymentIntent.id,
       };
-      fetch("http://localhost:5000/payments", {
+      fetch("https://doctors-portal-server-one-eta.vercel.app/payments", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -91,8 +93,8 @@ const CheckoutForm = ({ appointment }) => {
           if (data.insertedId) {
             setSuccessMessage("Congrats! your payment is successful.");
             setTransactionID(paymentIntent.id);
-            navigate('/dashboard/my-appointments');
-            toast.success("Congrats! your payment is successful.")
+            navigate("/dashboard/my-appointments");
+            toast.success("Congrats! your payment is successful.");
           }
         });
     }

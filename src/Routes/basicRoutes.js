@@ -19,78 +19,112 @@ import Payment from "../Pages/Dashboard/Payment";
 
 const routes = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: <Root />,
     children: [
       {
-        path: '/',
-        element: <Home />
+        path: "/",
+        element: <Home />,
       },
       {
-        path: '/home',
-        element: <Home />
+        path: "/home",
+        element: <Home />,
       },
       {
-        path: '/about',
-        element: <About />
+        path: "/about",
+        element: <About />,
       },
       {
-        path: '/appointment',
-        element: <Appointment />
+        path: "/appointment",
+        element: <Appointment />,
       },
       {
-        path: '/reviews',
-        element: <Reviews/>
+        path: "/reviews",
+        element: <Reviews />,
       },
       {
-        path: '/contact-us',
-        element: <ContactUs />
+        path: "/contact-us",
+        element: <ContactUs />,
       },
       {
-        path: '/login',
-        element: <Login />
+        path: "/login",
+        element: <Login />,
       },
       {
-        path: '/signup',
-        element: <SignUp />
+        path: "/signup",
+        element: <SignUp />,
       },
-    ]
+    ],
   },
   {
-    path: '/dashboard',
-    element: <PrivateRoute><DashboardLayout /></PrivateRoute>,
+    path: "/dashboard",
+    element: (
+      <PrivateRoute>
+        <DashboardLayout />
+      </PrivateRoute>
+    ),
     children: [
       {
-        path: '/dashboard',
-        element: <PrivateRoute><Dashboard /></PrivateRoute>
+        path: "/dashboard",
+        element: (
+          <PrivateRoute>
+            <Dashboard />
+          </PrivateRoute>
+        ),
       },
       {
-        path: '/dashboard/my-appointments',
-        element: <PrivateRoute><MyAppointment /></PrivateRoute>
+        path: "/dashboard/my-appointments",
+        element: (
+          <PrivateRoute>
+            <MyAppointment />
+          </PrivateRoute>
+        ),
       },
       {
-        path: '/dashboard/all-users',
-        element: <AdminRoute><AllUsers /></AdminRoute>
+        path: "/dashboard/all-users",
+        element: (
+          <AdminRoute>
+            <AllUsers />
+          </AdminRoute>
+        ),
       },
       {
-        path: '/dashboard/all-doctor',
-        element: <AdminRoute><AddDoctor /></AdminRoute>
+        path: "/dashboard/all-doctor",
+        element: (
+          <AdminRoute>
+            <AddDoctor />
+          </AdminRoute>
+        ),
       },
       {
-        path: '/dashboard/manage-doctor',
-        element: <AdminRoute><ManageDoctor /></AdminRoute>
+        path: "/dashboard/manage-doctor",
+        element: (
+          <AdminRoute>
+            <ManageDoctor />
+          </AdminRoute>
+        ),
       },
       {
-        path: '/dashboard/payment/:id',
-        element: <PrivateRoute><Payment /></PrivateRoute>,
-        loader: ({params}) => fetch(`http://localhost:5000/booked-appointment/${params.id}`, {
-          headers: {
-            authorization: `bearer ${localStorage.getItem("doctors-token")}`,
-          },
-        })
+        path: "/dashboard/payment/:id",
+        element: (
+          <PrivateRoute>
+            <Payment />
+          </PrivateRoute>
+        ),
+        loader: ({ params }) =>
+          fetch(
+            `https://doctors-portal-server-one-eta.vercel.app/booked-appointment/${params.id}`,
+            {
+              headers: {
+                authorization: `bearer ${localStorage.getItem(
+                  "doctors-token"
+                )}`,
+              },
+            }
+          ),
       },
-    ]
-  }
-])
+    ],
+  },
+]);
 
 export default routes;

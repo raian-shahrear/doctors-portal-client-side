@@ -19,7 +19,7 @@ const SignUp = () => {
   const [token] = useJWToken(emailForToken);
   if (token) {
     signOutUser();
-    localStorage.removeItem('doctors-token');
+    localStorage.removeItem("doctors-token");
     navigate("/login");
   }
 
@@ -68,7 +68,7 @@ const SignUp = () => {
       userEmail: email,
       role: "user",
     };
-    fetch("http://localhost:5000/users", {
+    fetch("https://doctors-portal-server-one-eta.vercel.app/users", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

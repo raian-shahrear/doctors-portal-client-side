@@ -5,15 +5,18 @@ const useAdmin = (email) => {
   const [adminLoading, setAdminLoading] = useState(true);
   useEffect(() => {
     if (email) {
-      fetch(`http://localhost:5000/users/admin/${email}`, {
-        headers: {
-          authorization: `bearer ${localStorage.getItem("doctors-token")}`,
-        },
-      })
+      fetch(
+        `https://doctors-portal-server-one-eta.vercel.app/users/admin/${email}`,
+        {
+          headers: {
+            authorization: `bearer ${localStorage.getItem("doctors-token")}`,
+          },
+        }
+      )
         .then((res) => res.json())
         .then((data) => {
           setIsAdmin(data.isAdmin);
-          setAdminLoading(false)
+          setAdminLoading(false);
         });
     }
   }, [email]);

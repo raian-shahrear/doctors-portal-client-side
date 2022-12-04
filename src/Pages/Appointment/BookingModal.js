@@ -26,14 +26,17 @@ const BookingModal = ({ service, selectedDate, setServices, refetch }) => {
       phoneNumber: phone,
     };
 
-    fetch("http://localhost:5000/booked-appointment", {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        authorization: `bearer ${localStorage.getItem("doctors-token")}`,
-      },
-      body: JSON.stringify(booking),
-    })
+    fetch(
+      "https://doctors-portal-server-one-eta.vercel.app/booked-appointment",
+      {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          authorization: `bearer ${localStorage.getItem("doctors-token")}`,
+        },
+        body: JSON.stringify(booking),
+      }
+    )
       .then((res) => res.json())
       .then((data) => {
         if (data.acknowledged) {

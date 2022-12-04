@@ -11,26 +11,30 @@ const AvailableAppointment = ({ selectedDate }) => {
 
   // const [resources, setResources] = useState([]);
   // useEffect(() => {
-  //   fetch("http://localhost:5000/appointments")
+  //   fetch("https://doctors-portal-server-one-eta.vercel.app/appointments")
   //     .then((res) => res.json())
   //     .then((data) => {
   //       setResources(data);
   //     });
   // }, []);
 
-  const {data:resources, isLoading, refetch} = useQuery({
-    queryKey: ['appointments', date],
-    queryFn: async() => {
-      const res = await fetch(`http://localhost:5000/appointments?date=${date}`);
+  const {
+    data: resources,
+    isLoading,
+    refetch,
+  } = useQuery({
+    queryKey: ["appointments", date],
+    queryFn: async () => {
+      const res = await fetch(
+        `https://doctors-portal-server-one-eta.vercel.app/appointments?date=${date}`
+      );
       const data = await res.json();
       return data;
-    }
-  })
+    },
+  });
 
-  if(isLoading){
-    return (
-      <PrimarySpinner />
-    )
+  if (isLoading) {
+    return <PrimarySpinner />;
   }
 
   return (
@@ -39,13 +43,14 @@ const AvailableAppointment = ({ selectedDate }) => {
         Available Appointments on <span className="text-secondary">{date}</span>
       </h4>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-9">
-        {!isLoading && resources?.map((resource) => (
-          <DisplayResources
-            key={resource._id}
-            resource={resource}
-            setServices={setServices}
-          />
-        ))}
+        {!isLoading &&
+          resources?.map((resource) => (
+            <DisplayResources
+              key={resource._id}
+              resource={resource}
+              setServices={setServices}
+            />
+          ))}
       </div>
       {service && (
         <BookingModal

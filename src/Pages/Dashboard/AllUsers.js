@@ -3,32 +3,37 @@ import { useQuery } from "@tanstack/react-query";
 import PrimarySpinner from "../../Components/Spinners/PrimarySpinner";
 import { toast } from "react-toastify";
 
-
 const AllUsers = () => {
   const {
     data: users,
     isLoading,
     refetch,
   } = useQuery({
-    queryKey: ['users'],
+    queryKey: ["users"],
     queryFn: async () => {
-      const res = await fetch("http://localhost:5000/users", {
-        headers: {
-          authorization: `bearer ${localStorage.getItem("doctors-token")}`,
-        },
-      });
+      const res = await fetch(
+        "https://doctors-portal-server-one-eta.vercel.app/users",
+        {
+          headers: {
+            authorization: `bearer ${localStorage.getItem("doctors-token")}`,
+          },
+        }
+      );
       const data = await res.json();
       return data;
     },
   });
 
   const handleToChangeRole = (id) => {
-    fetch(`http://localhost:5000/users/admin/${id}`, {
-      method: "PUT",
-      headers: {
-        authorization: `bearer ${localStorage.getItem("doctors-token")}`,
-      },
-    })
+    fetch(
+      `https://doctors-portal-server-one-eta.vercel.app/users/admin/${id}`,
+      {
+        method: "PUT",
+        headers: {
+          authorization: `bearer ${localStorage.getItem("doctors-token")}`,
+        },
+      }
+    )
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
@@ -46,12 +51,15 @@ const AllUsers = () => {
       `Are you sure, you want to delete ${user?.userName}`
     );
     if (agree) {
-      fetch(`http://localhost:5000/users/admin/${user?._id}`, {
-        method: "DELETE",
-        headers: {
-          authorization: `bearer ${localStorage.getItem("doctors-token")}`,
-        },
-      })
+      fetch(
+        `https://doctors-portal-server-one-eta.vercel.app/users/admin/${user?._id}`,
+        {
+          method: "DELETE",
+          headers: {
+            authorization: `bearer ${localStorage.getItem("doctors-token")}`,
+          },
+        }
+      )
         .then((res) => res.json())
         .then((data) => {
           if (data.acknowledged) {
@@ -88,32 +96,35 @@ const AllUsers = () => {
                 </tr>
               </thead>
               <tbody>
-                {!isLoading && users?.map((user, idx) => (
-                  <tr key={user?._id}>
-                    <th>{idx + 1}</th>
-                    <td>{user?.userName}</td>
-                    <td>{user?.userEmail}</td>
-                    <td className="capitalize font-semibold">{user?.role}</td>
-                    <td>
-                      <button
-                        onClick={() => handleToChangeRole(user?._id)}
-                        className={`btn btn-xs btn-outline ${
-                          user?.role === "host" ? "btn-warning" : "btn-success"
-                        }`}
-                      >
-                        {user?.role === "host" ? "Make User" : "Make Host"}
-                      </button>
-                    </td>
-                    <td className="flex justify-end">
-                      <button
-                        onClick={() => handleDeleteUser(user)}
-                        className="btn btn-xs btn-outline btn-error"
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+                {!isLoading &&
+                  users?.map((user, idx) => (
+                    <tr key={user?._id}>
+                      <th>{idx + 1}</th>
+                      <td>{user?.userName}</td>
+                      <td>{user?.userEmail}</td>
+                      <td className="capitalize font-semibold">{user?.role}</td>
+                      <td>
+                        <button
+                          onClick={() => handleToChangeRole(user?._id)}
+                          className={`btn btn-xs btn-outline ${
+                            user?.role === "host"
+                              ? "btn-warning"
+                              : "btn-success"
+                          }`}
+                        >
+                          {user?.role === "host" ? "Make User" : "Make Host"}
+                        </button>
+                      </td>
+                      <td className="flex justify-end">
+                        <button
+                          onClick={() => handleDeleteUser(user)}
+                          className="btn btn-xs btn-outline btn-error"
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
               </tbody>
             </table>
           </div>
